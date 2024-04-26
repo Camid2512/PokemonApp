@@ -1,0 +1,2 @@
+INDEX VERSION 1.4+C:\Users\camid\Downloads\UNIVERSIDAD\PROGRAMACION II\POKEPROYECTO\GitPokemon\PokeSpace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+225540744.index

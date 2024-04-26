@@ -1,0 +1,5 @@
+package co.edu.unbosque.pokemonapp.repository;
+
+public interface UserRepository {
+
+}

@@ -1,0 +1,3 @@
+spring.application.name=PokeApp
+spring.data.mongodb.uri=mongodb+srv://ccdiazr:Ie6ZrkHmIBcH2xrW@cluster0.chazyns.mongodb.net/
+spring.data.mongodb.auto-index-creation=true

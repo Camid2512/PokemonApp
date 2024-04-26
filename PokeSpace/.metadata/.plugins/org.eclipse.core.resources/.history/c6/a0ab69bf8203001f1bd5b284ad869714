@@ -1,0 +1,8 @@
+package co.edu.unbosque.pokemonapp.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
+public class UserController {
+
+}

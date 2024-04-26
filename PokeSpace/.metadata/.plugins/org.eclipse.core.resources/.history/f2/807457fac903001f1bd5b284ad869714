@@ -1,0 +1,3 @@
+spring.application.name=PokeApp
+spring.data.mongodb.uri=mongodb+srv://ccdiazr:Ie6ZrkHmIBcH2xrW@cluster0.chazyns.mongodb.net/proyectofinal?retryWrites=true&w=majority
+spring.data.mongodb.port=8083

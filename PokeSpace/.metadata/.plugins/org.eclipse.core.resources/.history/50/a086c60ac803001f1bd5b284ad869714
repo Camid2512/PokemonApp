@@ -1,0 +1,63 @@
+package co.edu.unbosque.pokemonapp.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.unbosque.pokemonapp.model.User;
+import co.edu.unbosque.pokemonapp.repository.UserRepository;
+import co.edu.unbosque.pokemonapp.util.AESUtil;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepository userRep;
+
+	public UserService() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int create(User newUser) {
+
+		if (findUsernameAlreadyTaken(newUser)) {
+			return 1;
+		} else {
+			AESUtil.encrypt(newUser.getUsername());
+			AESUtil.encrypt(newUser.getPassword());
+			AESUtil.encrypt(newUser.getEmail());
+			userRep.save(newUser);
+			return 0;
+		}
+	}
+
+	public long count() {
+		return userRep.count();
+	}
+
+	public List<User> getAll() {
+		return (List<User>) userRep.findAll();
+	}
+
+	public int deleteById(Long id) {
+		Optional<User> found = userRep.findById(id);
+		if (found.isPresent()) {
+			userRep.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	public boolean findUsernameAlreadyTaken(User userSearch) {
+		Optional<User> found = userRep.findByUsername(userSearch.getUsername());
+		if (found.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}

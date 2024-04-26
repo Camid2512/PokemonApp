@@ -1,0 +1,3 @@
+spring.application.name=PokeApp
+spring.data.mongodb.uri=mongodb+srv://ccdiazr:<password>@cluster0.chazyns.mongodb.net/
+spring.data.mongodb.database=mygrocerylist

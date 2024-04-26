@@ -1,0 +1,33 @@
+package co.edu.unbosque.pokemonapp.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.unbosque.pokemonapp.model.User;
+import co.edu.unbosque.pokemonapp.repository.UserRepository;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepository userRep;
+
+	public UserService() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int create(User newUser) {
+
+		if (findUsernameAlreadyTaken) {
+			return 1;
+		} else {
+
+		}
+
+	}
+
+	public boolean findUsernameAlreadyTaken(User userSearch) {
+
+	}
+
+}

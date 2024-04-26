@@ -1,0 +1,2 @@
+spring.application.name=PokeApp
+spring.data.mongodb.database=mongodb+srv://ccdiazr:dyT65bWWtWpOBtPy@cluster0.chazyns.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

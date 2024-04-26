@@ -1,0 +1,3 @@
+spring.application.name=PokeApp
+spring.data.mongodb.uri=jdbc:mongodb://atlas-sql-662671d6af3c8c2d0b3a9130-dyufg.a.query.mongodb.net/myVirtualDatabase?ssl=true&authSource=admin
+spring.data.mongodb.auto-index-creation=true

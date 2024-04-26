@@ -1,0 +1,129 @@
+package co.edu.unbosque.pokemonapp.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.unbosque.pokemonapp.model.User;
+import co.edu.unbosque.pokemonapp.repository.UserRepository;
+import co.edu.unbosque.pokemonapp.util.AESUtil;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepository userRep;
+
+	public UserService() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int create(User newUser) {
+
+		if (findUsernameAlreadyTaken(newUser)) {
+			return 1;
+		} else {
+			AESUtil.encrypt(newUser.getUsername());
+			AESUtil.encrypt(newUser.getPassword());
+			AESUtil.encrypt(newUser.getEmail());
+			userRep.save(newUser);
+			return 0;
+		}
+	}
+
+	public long count() {
+		return userRep.count();
+	}
+
+	public List<User> getAll() {
+		return (List<User>) userRep.findAll();
+	}
+
+	public int deleteById(String id) {
+		Optional<User> found = userRep.findById(id);
+		if (found.isPresent()) {
+			userRep.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	public int updateById(String id, User newData) {
+		Optional<User> found = userRep.findById(id);
+		Optional<User> newFound = userRep.findByUsername(newData.getUsername());
+
+		if (found.isPresent() && !newFound.isPresent()) {
+			User temp = found.get();
+			temp.setUsername(newData.getUsername());
+			temp.setPassword(newData.getPassword());
+			temp.setEmail(newData.getEmail());
+			userRep.save(temp);
+//			emailService.sendUpdateEmail(newData.getEmail());
+			return 0;
+		}
+		if (found.isPresent() && newFound.isPresent()) {
+			return 1;
+		}
+		if (!found.isPresent()) {
+			return 2;
+		} else {
+			return 3;
+		}
+	}
+
+	public User getById(String id) {
+		Optional<User> found = userRep.findById(id);
+		if (found.isPresent()) {
+			return found.get();
+		} else {
+			return null;
+		}
+	}
+
+	public String getCodeRecovering(String email) {
+
+		Optional<User> found = userRepo.findByEmail(email);
+		if (found.isPresent()) {
+			codeTemp = emailService.recoverPasswordEmail(email);
+			System.out.println(codeTemp);
+			return codeTemp;
+		} else {
+			System.out.println(codeTemp);
+			return codeTemp;
+		}
+	}
+
+	public int recoverPassword(String code, String newPass, String email) {
+
+		Optional<User> found = userRepo.findByEmail(email);
+		String codeGet = codeTemp;
+		System.out.println(codeGet);
+		if (found.isPresent()) {
+			if (code.equals(codeGet)) {
+
+				User temp = found.get();
+				temp.setUsername(found.get().getUsername());
+				temp.setContrasena(newPass);
+				temp.setEmail(found.get().getEmail());
+				userRepo.save(temp);
+				return 0;
+			}
+		} else {
+			return 1;
+		}
+		return 2;
+	}
+
+	public boolean findUsernameAlreadyTaken(User userSearch) {
+		Optional<User> found = userRep.findByUsername(userSearch.getUsername());
+		if (found.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}
