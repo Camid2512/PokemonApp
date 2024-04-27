@@ -1,6 +1,5 @@
 package co.edu.unbosque.pokemonapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +142,23 @@ public class UserController {
 		} else {
 			return new ResponseEntity<>("Error on delete", HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/logincheck")
+
+	ResponseEntity<String> checkLogin(@RequestParam String username, @RequestParam String password) {
+
+		int status = userServ.loginValidation(username, password);
+		if (status == 0) {
+
+			return new ResponseEntity<>("Accepted login", HttpStatus.ACCEPTED);
+
+		} else if (status == 1) {
+			return new ResponseEntity<>("User or Password incorrect", HttpStatus.UNAUTHORIZED);
+		} else {
+			return new ResponseEntity<>("Incorrect credentials", HttpStatus.NOT_ACCEPTABLE);
+		}
+
 	}
 
 }

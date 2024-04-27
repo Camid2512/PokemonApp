@@ -28,12 +28,30 @@ public class UserService {
 		if (findUsernameAlreadyTaken(newUser) || findUsernameAlreadyTaken(newUser)) {
 			return 1;
 		} else {
-			AESUtil.encrypt(newUser.getUsername());
-			AESUtil.encrypt(newUser.getPassword());
-			AESUtil.encrypt(newUser.getEmail());
-			userRep.save(newUser);
+			User temp = newUser;
+			AESUtil.encrypt(temp.getUsername());
+			AESUtil.encrypt(temp.getPassword());
+			AESUtil.encrypt(temp.getEmail());
+			userRep.save(temp);
 			return 0;
 		}
+	}
+
+	public int loginValidation(String username, String password) {
+
+		for (User u : getAll()) {
+
+			if (u.getUsername().equals(username)) {
+				if (u.getPassword().equals(password)) {
+					return 0;
+				}
+			} else {
+				return 1;
+			}
+
+		}
+		return 2;
+
 	}
 
 	public long count() {
@@ -137,6 +155,18 @@ public class UserService {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean findPassword(User userSearch) {
+
+		Optional<User> found = userRep.findByPassword(userSearch.getPassword());
+
+		if (found.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 }
