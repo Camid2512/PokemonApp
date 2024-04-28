@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.pokemonapp.model.Session;
+import co.edu.unbosque.pokemonapp.model.User;
 import co.edu.unbosque.pokemonapp.service.SessionService;
 
 @CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
@@ -29,9 +30,11 @@ public class SessionController {
 	@PostMapping("/create")
 	public ResponseEntity<String> createSession() {
 
+		User newUser = null;
+
 		try {
 
-			int status = sessionServ.create();
+			int status = sessionServ.create(newUser);
 
 			if (status == 0) {
 				return new ResponseEntity<>("session saved successfully", HttpStatus.CREATED);

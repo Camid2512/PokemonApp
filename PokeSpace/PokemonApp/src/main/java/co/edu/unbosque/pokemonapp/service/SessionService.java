@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
+import co.edu.unbosque.pokemonapp.model.DateTime;
 import co.edu.unbosque.pokemonapp.model.Session;
+import co.edu.unbosque.pokemonapp.model.User;
 import co.edu.unbosque.pokemonapp.repository.SessionRepository;
 
 @Service
@@ -21,28 +23,34 @@ public class SessionService {
 
 	private Gson gson;
 
+	private DateTimeService dateTimeData;
+
 	public SessionService() {
 		// TODO Auto-generated constructor stub
 		gson = new Gson();
+		dateTimeData = new DateTimeService();
 	}
 
-	public int create() {
+	public int create(User userSession) {
 		try {
 
-			Content content = Request
+			Content contentIpLocation = Request
 					.get("https://ipgeolocation.abstractapi.com/v1/?api_key=d8706a8e487c4b608c26e64aa216e16a").execute()
 					.returnContent();
-			Session newSession = gson.fromJson(content.toString(), Session.class);
+			Session newSessionIpLocation = gson.fromJson(contentIpLocation.toString(), Session.class);
+			String location = Float.toString(newSessionIpLocation.getLatitude()) + ","
+					+ Float.toString(newSessionIpLocation.getLongitude());
 
-			System.out.println(newSession.getIp_address());
-			System.out.println(newSession.getLatitude());
-			System.out.println(newSession.getLongitude());
+			System.out.println(newSessionIpLocation.getIp_address());
+			System.out.println(newSessionIpLocation.getLatitude());
+			System.out.println(newSessionIpLocation.getLongitude());
 
 			Session temp = new Session();
-			temp.setIp_address(newSession.getIp_address());
-			temp.setLongitude(newSession.getLongitude());
-			temp.setLatitude(newSession.getLatitude());
-
+			temp.setUserSession(userSession);
+			temp.setIp_address(newSessionIpLocation.getIp_address());
+			temp.setLongitude(newSessionIpLocation.getLongitude());
+			temp.setLatitude(newSessionIpLocation.getLatitude());
+			temp.setDatetime(dateTimeData.getDateTimeInfo(location).getDatetime());
 			sessionRep.save(temp);
 			return 0;
 		} catch (IOException error) {
@@ -57,4 +65,5 @@ public class SessionService {
 		return (List<Session>) sessionRep.findAll();
 
 	}
+
 }

@@ -39,18 +39,17 @@ public class UserService {
 
 	public int loginValidation(String username, String password) {
 
+//		String userValdiation = AESUtil.encrypt(username);
+//		String passwordValdiation = AESUtil.encrypt(password);
 		for (User u : getAll()) {
 
 			if (u.getUsername().equals(username)) {
 				if (u.getPassword().equals(password)) {
 					return 0;
 				}
-			} else {
-				return 1;
 			}
-
 		}
-		return 2;
+		return 1;
 
 	}
 
@@ -97,6 +96,15 @@ public class UserService {
 
 	public User getById(String id) {
 		Optional<User> found = userRep.findById(id);
+		if (found.isPresent()) {
+			return found.get();
+		} else {
+			return null;
+		}
+	}
+
+	public User getByUsername(String username) {
+		Optional<User> found = userRep.findByUsername(username);
 		if (found.isPresent()) {
 			return found.get();
 		} else {

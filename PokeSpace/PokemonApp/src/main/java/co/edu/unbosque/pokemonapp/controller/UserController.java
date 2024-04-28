@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.pokemonapp.model.User;
+import co.edu.unbosque.pokemonapp.service.SessionService;
 import co.edu.unbosque.pokemonapp.service.UserService;
 
 @CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
@@ -25,6 +26,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userServ;
+
+	@Autowired
+	private SessionService sessionServ;
 
 	public UserController() {
 		// TODO Auto-generated constructor stub
@@ -148,16 +152,21 @@ public class UserController {
 
 	ResponseEntity<String> checkLogin(@RequestParam String username, @RequestParam String password) {
 
+		User found = userServ.getByUsername(username);
+
 		int status = userServ.loginValidation(username, password);
 		if (status == 0) {
+			int statusSession = sessionServ.create(found);
+			if (statusSession == 0) {
 
-			return new ResponseEntity<>("Accepted login", HttpStatus.ACCEPTED);
-
+				return new ResponseEntity<>("Accepted login", HttpStatus.ACCEPTED);
+			}
 		} else if (status == 1) {
 			return new ResponseEntity<>("User or Password incorrect", HttpStatus.UNAUTHORIZED);
 		} else {
 			return new ResponseEntity<>("Incorrect credentials", HttpStatus.NOT_ACCEPTABLE);
 		}
+		return new ResponseEntity<>("Error please contact with admin", HttpStatus.BAD_REQUEST);
 
 	}
 

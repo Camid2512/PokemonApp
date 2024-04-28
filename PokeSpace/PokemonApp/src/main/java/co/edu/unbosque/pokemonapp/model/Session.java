@@ -9,19 +9,23 @@ public class Session {
 	@Id
 	private String id;
 
+	private User userSession;
 	private String ip_address;
 	private Float longitude;
 	private Float latitude;
+	private String datetime;
 
 	public Session() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Session(String ip_address, Float longitude, Float latitude) {
+	public Session(User userSession, String ip_address, Float longitude, Float latitude, String datetime) {
 
+		this.userSession = userSession;
 		this.ip_address = ip_address;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.datetime = datetime;
 
 	}
 
@@ -31,6 +35,14 @@ public class Session {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public User getUserSession() {
+		return userSession;
+	}
+
+	public void setUserSession(User userSession) {
+		this.userSession = userSession;
 	}
 
 	public String getIp_address() {
@@ -57,10 +69,18 @@ public class Session {
 		this.latitude = latitude;
 	}
 
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
+	}
+
 	@Override
 	public String toString() {
-		return "Session [id=" + id + ", ip_address=" + ip_address + ", longitude=" + longitude + ", latitude="
-				+ latitude + "]";
+		return "Session [id=" + id + ", userSession=" + userSession + ", ip_address=" + ip_address + ", longitude="
+				+ longitude + ", latitude=" + latitude + ", datetime=" + datetime + "]";
 	}
 
 }
