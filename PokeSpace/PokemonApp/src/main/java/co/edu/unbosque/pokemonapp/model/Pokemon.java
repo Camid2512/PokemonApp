@@ -1,60 +1,74 @@
 package co.edu.unbosque.pokemonapp.model;
 
-import java.util.Arrays;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collation = "pokemones")
 public class Pokemon {
+	@Id
+	private String id;
 
-//	private String id;
-	private int id;
+	@Indexed(unique = true)
+	private int pokeId;
 	private String name;
 	private int height;
 	private int weight;
-//	private Moves[] moves;
+	private String[] moves;
 	private String sprite;
 	private int hp;
 	private int attack;
-	private int specialattack;
+	private int defense;
+	private int specialAttack;
+	private int specialDefense;
 	private int speed;
-//	private Type types;
+	private String[] types;
 
 	public Pokemon() {
 		// TODO Auto-generated constructor stub
+		moves = new String[4];
+		types = new String[4];
 	}
 
-	public Pokemon(int pokeId, String name, int height, int weight, Moves[] moves, String sprite, int hp, int attack,
-			int specialattack, int speed, Type types) {
+	public Pokemon(int pokeId, String name, int height, int weight, String[] moves, String sprite, int hp, int attack,
+			int defense, int specialAttack, int specialDefense, int speed, String[] types) {
 
-//		this.pokeId = pokeId;
+		moves = new String[4];
+		types = new String[4];
+
+		this.pokeId = pokeId;
 		this.name = name;
 		this.height = height;
 		this.weight = weight;
-//		this.moves = moves;
+		this.moves = moves;
 		this.sprite = sprite;
 		this.hp = hp;
 		this.attack = attack;
-		this.specialattack = specialattack;
+		this.defense = defense;
+		this.specialAttack = specialAttack;
+		this.specialDefense = specialDefense;
 		this.speed = speed;
-//		this.types = types;
+		this.types = types;
 	}
 
-//	public String getId() {
-//		return id;
-//	}
-//
-//	public void setId(String id) {
-//		this.id = id;
-//	}
-
-	public String getName() {
-		return name;
-	}
-
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public int getPokeId() {
+		return pokeId;
+	}
+
+	public void setPokeId(int pokeId) {
+		this.pokeId = pokeId;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {
@@ -77,13 +91,13 @@ public class Pokemon {
 		this.weight = weight;
 	}
 
-//	public Moves[] getMoves() {
-//		return moves;
-//	}
-//
-//	public void setMoves(Moves[] moves) {
-//		this.moves = moves;
-//	}
+	public String[] getMoves() {
+		return moves;
+	}
+
+	public void setMoves(String[] moves) {
+		this.moves = moves;
+	}
 
 	public String getSprite() {
 		return sprite;
@@ -109,12 +123,28 @@ public class Pokemon {
 		this.attack = attack;
 	}
 
-	public int getSpecialattack() {
-		return specialattack;
+	public int getDefense() {
+		return defense;
 	}
 
-	public void setSpecialattack(int specialattack) {
-		this.specialattack = specialattack;
+	public void setDefense(int defense) {
+		this.defense = defense;
+	}
+
+	public int getSpecialAttack() {
+		return specialAttack;
+	}
+
+	public void setSpecialAttack(int specialAttack) {
+		this.specialAttack = specialAttack;
+	}
+
+	public int getSpecialDefense() {
+		return specialDefense;
+	}
+
+	public void setSpecialDefense(int specialDefense) {
+		this.specialDefense = specialDefense;
 	}
 
 	public int getSpeed() {
@@ -125,19 +155,12 @@ public class Pokemon {
 		this.speed = speed;
 	}
 
-//	public Type getTypes() {
-//		return types;
-//	}
-//
-//	public void setTypes(Type types) {
-//		this.types = types;
-//	}
+	public String[] getTypes() {
+		return types;
+	}
 
-	@Override
-	public String toString() {
-		return "Pokemon [id=" + id + ", name=" + name + ", height=" + height + ", weight=" + weight + ", moves="
-				+ ", sprite=" + sprite + ", hp=" + hp + ", attack=" + attack + ", specialattack=" + specialattack
-				+ ", speed=" + speed + ", types=" + "]";
+	public void setTypes(String[] types) {
+		this.types = types;
 	}
 
 }

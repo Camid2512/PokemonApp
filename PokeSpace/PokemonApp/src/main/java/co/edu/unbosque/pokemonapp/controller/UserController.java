@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.pokemonapp.model.User;
 import co.edu.unbosque.pokemonapp.service.SessionService;
 import co.edu.unbosque.pokemonapp.service.UserService;
+import co.edu.unbosque.pokemonapp.util.AESUtil;
 
 @CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
 @RestController
@@ -152,9 +153,9 @@ public class UserController {
 
 	ResponseEntity<String> checkLogin(@RequestParam String username, @RequestParam String password) {
 
-		User found = userServ.getByUsername(username);
+		User found = userServ.getByUsername(AESUtil.encrypt(username));
 
-		int status = userServ.loginValidation(username, password);
+		int status = userServ.loginValidation(AESUtil.encrypt(username), AESUtil.encrypt(password));
 		if (status == 0) {
 			int statusSession = sessionServ.create(found);
 			if (statusSession == 0) {
