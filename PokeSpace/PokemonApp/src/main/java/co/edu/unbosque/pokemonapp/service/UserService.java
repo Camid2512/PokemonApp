@@ -25,26 +25,28 @@ public class UserService {
 
 	public int create(User newUser) {
 
+		String username = AESUtil.encrypt(newUser.getUsername());
+		String password = AESUtil.encrypt(newUser.getPassword());
+		String email = AESUtil.encrypt(newUser.getEmail());
 		if (findUsernameAlreadyTaken(newUser) || findUsernameAlreadyTaken(newUser)) {
 			return 1;
 		} else {
-			User temp = newUser;
-			AESUtil.encrypt(temp.getUsername());
-			AESUtil.encrypt(temp.getPassword());
-			AESUtil.encrypt(temp.getEmail());
-			userRep.save(temp);
+			newUser.setUsername(username);
+			newUser.setPassword(password);
+			newUser.setEmail(email);
+			userRep.save(newUser);
 			return 0;
 		}
 	}
 
 	public int loginValidation(String username, String password) {
 
-//		String userValdiation = AESUtil.encrypt(username);
-//		String passwordValdiation = AESUtil.encrypt(password);
+		String userValidiation = AESUtil.encrypt(username);
+		String passwordValdiation = AESUtil.encrypt(password);
 		for (User u : getAll()) {
 
-			if (u.getUsername().equals(username)) {
-				if (u.getPassword().equals(password)) {
+			if (u.getUsername().equals(userValidiation)) {
+				if (u.getPassword().equals(passwordValdiation)) {
 					return 0;
 				}
 			}
@@ -148,7 +150,7 @@ public class UserService {
 	}
 
 	public boolean findUsernameAlreadyTaken(User userSearch) {
-		Optional<User> found = userRep.findByUsername(userSearch.getUsername());
+		Optional<User> found = userRep.findByUsername(AESUtil.encrypt(userSearch.getUsername()));
 		if (found.isPresent()) {
 			return true;
 		} else {
@@ -157,7 +159,7 @@ public class UserService {
 	}
 
 	public boolean findEmailAlreadyTaken(User userSearch) {
-		Optional<User> found = userRep.findByEmail(userSearch.getEmail());
+		Optional<User> found = userRep.findByEmail(AESUtil.encrypt(userSearch.getEmail()));
 		if (found.isPresent()) {
 			return true;
 		} else {
@@ -167,7 +169,7 @@ public class UserService {
 
 	public boolean findPassword(User userSearch) {
 
-		Optional<User> found = userRep.findByPassword(userSearch.getPassword());
+		Optional<User> found = userRep.findByPassword(AESUtil.encrypt(userSearch.getPassword()));
 
 		if (found.isPresent()) {
 			return true;
