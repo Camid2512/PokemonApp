@@ -1,16 +1,19 @@
 package co.edu.unbosque.pokemonapp.model;
 
+import java.util.Arrays;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "pokemones")
+@Document(collection = "pokemones")
 public class Pokemon {
 	@Id
 	private String id;
 
 	@Indexed(unique = true)
 	private int pokeId;
+
 	private String name;
 	private int height;
 	private int weight;
@@ -161,6 +164,14 @@ public class Pokemon {
 
 	public void setTypes(String[] types) {
 		this.types = types;
+	}
+
+	@Override
+	public String toString() {
+		return "Pokemon [id=" + id + ", pokeId=" + pokeId + ", name=" + name + ", height=" + height + ", weight="
+				+ weight + ", moves=" + Arrays.toString(moves) + ", sprite=" + sprite + ", hp=" + hp + ", attack="
+				+ attack + ", defense=" + defense + ", specialAttack=" + specialAttack + ", specialDefense="
+				+ specialDefense + ", speed=" + speed + ", types=" + Arrays.toString(types) + "]";
 	}
 
 }

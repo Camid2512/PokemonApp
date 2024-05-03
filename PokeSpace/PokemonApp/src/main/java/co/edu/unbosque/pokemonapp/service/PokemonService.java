@@ -1,8 +1,10 @@
 package co.edu.unbosque.pokemonapp.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.apache.hc.client5.http.fluent.Content;
 import org.apache.hc.client5.http.fluent.Request;
@@ -25,15 +27,27 @@ public class PokemonService {
 	}
 
 	public void createAllPokemon() {
-		for (int i = 0; i < 1025; i++) {
+		createPokemonRecursive(1);
+	}
 
-			try {
-				Content content = Request.get("https://pokeapi.co/api/v2/pokemon/" + i + 1).execute().returnContent();
-				extractPokeInfo(content.toString());
-			} catch (Exception e) {
-				// TODO: handle exception
+	private void createPokemonRecursive(int currentId) {
+		if (currentId <= 1025) {
+			if ((currentId >= 1 && currentId <= 131) || (currentId >= 133 && currentId <= 200)
+					|| (currentId >= 202 && currentId <= 234) || (currentId >= 236 && currentId <= 787)
+					|| (currentId >= 791 && currentId <= 1025)) {
+				try {
+					Content content = Request.get("https://pokeapi.co/api/v2/pokemon/" + currentId).execute()
+							.returnContent();
+					extractPokeInfo(content.toString());
+					createPokemonRecursive(currentId + 1);
+				} catch (Exception e) {
+					System.err.println("Error fetching data for Pokemon with ID: " + currentId);
+					e.printStackTrace();
+					createPokemonRecursive(currentId + 1);
+				}
+			} else {
+				createPokemonRecursive(currentId + 1);
 			}
-
 		}
 	}
 
@@ -130,6 +144,41 @@ public class PokemonService {
 			randomMoves[i] = moveName;
 		}
 		return randomMoves;
+	}
+
+	public Pokemon[] getRandomTeam() {
+		Pokemon[] battleTeam = new Pokemon[6];
+		Random randomNum = new Random();
+
+		List<Integer> availableIndices = new ArrayList<>();
+		List<Integer> chosenIndices = new ArrayList<>();
+
+		// Populate availableIndices with IDs of existing Pokémon, excluding the
+		// specified IDs
+		List<Integer> existingIds = pokeRep.findAll().stream().map(pokemon -> pokemon.getPokeId())
+				.collect(Collectors.toList());
+		for (int id = 1; id <= 1024; id++) {
+			if (existingIds.contains(id) && !Arrays.asList(132, 201, 235, 789, 790).contains(id)) {
+				availableIndices.add(id);
+			}
+		}
+
+		// Generate random team
+		for (int i = 0; i < 6; i++) {
+			int randomIndex;
+			if (availableIndices.isEmpty()) {
+				break; // No more available Pokémon IDs
+			}
+			do {
+				randomIndex = availableIndices.get(randomNum.nextInt(availableIndices.size()));
+			} while (chosenIndices.contains(randomIndex));
+
+			chosenIndices.add(randomIndex); // Add the selected index to the list
+			battleTeam[i] = pokeRep.findByPokeId(randomIndex).orElse(null); // Using optional orElse to handle empty
+																			// result
+		}
+
+		return battleTeam;
 	}
 
 }
