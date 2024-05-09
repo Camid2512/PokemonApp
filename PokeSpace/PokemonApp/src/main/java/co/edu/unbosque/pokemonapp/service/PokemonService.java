@@ -3,6 +3,7 @@ package co.edu.unbosque.pokemonapp.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.unbosque.pokemonapp.model.Move;
 import co.edu.unbosque.pokemonapp.model.Pokemon;
 import co.edu.unbosque.pokemonapp.repository.PokemonRepository;
 
@@ -21,6 +23,9 @@ public class PokemonService {
 
 	@Autowired
 	PokemonRepository pokeRep;
+
+	@Autowired
+	MoveService moveServ;
 
 	public PokemonService() {
 		// TODO Auto-generated constructor stub
@@ -85,10 +90,11 @@ public class PokemonService {
 			temp.setTypes(arr);
 		}
 
-		JSONArray movesArray = pokemonData.getJSONArray("moves");
-		String[] randomMoves = getRandomMoves(movesArray, 4);
+		Move[] randomMoves = moveServ.getRandomMovesArray();
 		temp.setMoves(randomMoves);
-
+		JSONObject spritesObj = pokemonData.getJSONObject("sprites");
+		String backSpriteUrl = spritesObj.getString("back_default");
+		temp.setSprite(backSpriteUrl);
 		int hp = 0, attack = 0, defense = 0, specialAttack = 0, specialDefense = 0, speed = 0;
 		JSONArray statsArray = pokemonData.getJSONArray("stats");
 		for (int i = 0; i < statsArray.length(); i++) {
@@ -127,25 +133,6 @@ public class PokemonService {
 
 	}
 
-	public String[] getRandomMoves(JSONArray movesArray, int numMoves) {
-		String[] randomMoves = new String[numMoves];
-		Random random = new Random();
-		int totalMoves = movesArray.length();
-		List<Integer> chosenIndices = new ArrayList<>();
-		for (int i = 0; i < numMoves; i++) {
-			int randomIndex;
-			do {
-				randomIndex = random.nextInt(totalMoves);
-			} while (chosenIndices.contains(randomIndex));
-
-			chosenIndices.add(randomIndex);
-			JSONObject moveObj = movesArray.getJSONObject(randomIndex).getJSONObject("move");
-			String moveName = moveObj.getString("name");
-			randomMoves[i] = moveName;
-		}
-		return randomMoves;
-	}
-
 	public Pokemon[] getRandomTeam() {
 		Pokemon[] battleTeam = new Pokemon[6];
 		Random randomNum = new Random();
@@ -179,6 +166,16 @@ public class PokemonService {
 		}
 
 		return battleTeam;
+	}
+
+	public Pokemon getPokeInfo(String name) {
+		Optional<Pokemon> found = pokeRep.findByName(name);
+
+		if (found.isPresent()) {
+			return found.get();
+		} else {
+			return null;
+		}
 	}
 
 }

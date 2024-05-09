@@ -17,28 +17,27 @@ public class Pokemon {
 	private String name;
 	private int height;
 	private int weight;
-	private String[] moves;
+	private Move[] moves;
 	private String sprite;
-	private int hp;
-	private int attack;
-	private int defense;
-	private int specialAttack;
-	private int specialDefense;
+	private double hp;
+	private double attack;
+	private double defense;
+	private double specialAttack;
+	private double specialDefense;
 	private int speed;
 	private String[] types;
 
 	public Pokemon() {
 		// TODO Auto-generated constructor stub
-		moves = new String[4];
+		moves = new Move[4];
 		types = new String[4];
 	}
 
-	public Pokemon(int pokeId, String name, int height, int weight, String[] moves, String sprite, int hp, int attack,
-			int defense, int specialAttack, int specialDefense, int speed, String[] types) {
+	public Pokemon(int pokeId, String name, int height, int weight, Move[] moves, String sprite, double hp,
+			double attack, double defense, double specialAttack, double specialDefense, int speed, String[] types) {
 
-		moves = new String[4];
+		moves = new Move[4];
 		types = new String[4];
-
 		this.pokeId = pokeId;
 		this.name = name;
 		this.height = height;
@@ -94,11 +93,11 @@ public class Pokemon {
 		this.weight = weight;
 	}
 
-	public String[] getMoves() {
+	public Move[] getMoves() {
 		return moves;
 	}
 
-	public void setMoves(String[] moves) {
+	public void setMoves(Move[] moves) {
 		this.moves = moves;
 	}
 
@@ -110,43 +109,43 @@ public class Pokemon {
 		this.sprite = sprite;
 	}
 
-	public int getHp() {
+	public double getHp() {
 		return hp;
 	}
 
-	public void setHp(int hp) {
+	public void setHp(double hp) {
 		this.hp = hp;
 	}
 
-	public int getAttack() {
+	public double getAttack() {
 		return attack;
 	}
 
-	public void setAttack(int attack) {
+	public void setAttack(double attack) {
 		this.attack = attack;
 	}
 
-	public int getDefense() {
+	public double getDefense() {
 		return defense;
 	}
 
-	public void setDefense(int defense) {
+	public void setDefense(double defense) {
 		this.defense = defense;
 	}
 
-	public int getSpecialAttack() {
+	public double getSpecialAttack() {
 		return specialAttack;
 	}
 
-	public void setSpecialAttack(int specialAttack) {
+	public void setSpecialAttack(double specialAttack) {
 		this.specialAttack = specialAttack;
 	}
 
-	public int getSpecialDefense() {
+	public double getSpecialDefense() {
 		return specialDefense;
 	}
 
-	public void setSpecialDefense(int specialDefense) {
+	public void setSpecialDefense(double specialDefense) {
 		this.specialDefense = specialDefense;
 	}
 

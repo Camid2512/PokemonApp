@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.pokemonapp.model.Session;
 import co.edu.unbosque.pokemonapp.model.User;
 import co.edu.unbosque.pokemonapp.service.SessionService;
+import co.edu.unbosque.pokemonapp.service.UserService;
+import co.edu.unbosque.pokemonapp.util.AESUtil;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
 @RestController
@@ -22,17 +26,19 @@ public class SessionController {
 
 	@Autowired
 	private SessionService sessionServ;
+	@Autowired
+	private UserService userServ;
 
 	public SessionController() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<String> createSession() {
-
-		User newUser = null;
+	public ResponseEntity<String> createSession(@RequestParam String username) {
 
 		try {
+
+			User newUser = userServ.getByUsername(AESUtil.encrypt(username));
 
 			int status = sessionServ.create(newUser);
 
