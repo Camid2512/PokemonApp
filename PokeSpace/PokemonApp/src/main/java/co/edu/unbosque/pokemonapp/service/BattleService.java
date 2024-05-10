@@ -63,16 +63,15 @@ public class BattleService {
 			hpCalculated = defenderPokemon.getHp() - dmgDeal;
 		}
 
-		return "The pokemon: " + attackerPokemon.getName() + " did: " + dmgDeal + " to the pokemon: "
-				+ defenderPokemon.getName() + " leaving it with: " + Math.round(hpCalculated) + " hp";
+		return "Damage:" + dmgDeal + ", Hp:" + Math.round(hpCalculated);
 
 	}
 
 	public Pokemon firstAttacker(Pokemon pokemonA, Pokemon pokemonB) {
 		if (pokemonA.getSpeed() < pokemonB.getSpeed()) {
-			return pokemonB;
-		} else {
 			return pokemonA;
+		} else {
+			return pokemonB;
 		}
 	}
 
@@ -89,6 +88,21 @@ public class BattleService {
 
 		}
 
+	}
+
+	public Pokemon firstAttacker2v2(Pokemon pokemonA, Pokemon pokemonB, Pokemon pokemonC, Pokemon pokemonD) {
+		if (pokemonA.getSpeed() < pokemonB.getSpeed() && pokemonA.getSpeed() < pokemonC.getSpeed()
+				&& pokemonA.getSpeed() < pokemonD.getSpeed()) {
+			return pokemonA;
+		} else if (pokemonB.getSpeed() < pokemonA.getSpeed() && pokemonB.getSpeed() < pokemonC.getSpeed()
+				&& pokemonB.getSpeed() < pokemonD.getSpeed()) {
+			return pokemonB;
+		} else if (pokemonC.getSpeed() < pokemonB.getSpeed() && pokemonC.getSpeed() < pokemonA.getSpeed()
+				&& pokemonC.getSpeed() < pokemonD.getSpeed()) {
+			return pokemonC;
+		} else {
+			return pokemonD;
+		}
 	}
 
 }

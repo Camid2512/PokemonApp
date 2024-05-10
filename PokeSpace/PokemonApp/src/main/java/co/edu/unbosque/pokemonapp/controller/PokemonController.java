@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.pokemonapp.model.Pokemon;
@@ -62,6 +63,13 @@ public class PokemonController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("ERROR Please contact admin", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
+	}
+
+	@GetMapping("/getpokemonpokeid")
+	ResponseEntity<Pokemon> getPokePokeId(@RequestParam int pokeId) {
+
+		return new ResponseEntity<>(pokeServ.getPokeInfo(pokeId), HttpStatus.ACCEPTED);
 
 	}
 
