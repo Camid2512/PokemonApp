@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +22,9 @@ import co.edu.unbosque.pokemonapp.service.SessionService;
 import co.edu.unbosque.pokemonapp.service.UserService;
 import co.edu.unbosque.pokemonapp.util.AESUtil;
 
-@CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = { "http://localhost:8083", "http://localhost:8082", "*" })
 public class UserController {
 
 	@Autowired
@@ -35,25 +37,17 @@ public class UserController {
 		// TODO Auto-generated constructor stub
 	}
 
-	@PostMapping("/create")
-	public ResponseEntity<String> createUser(@RequestParam String username, @RequestParam String password,
-			@RequestParam String email) {
+	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> createNewWithJson(@RequestBody User newUser) {
 
-		try {
+		System.out.println(newUser.toString());
+		int status = userServ.create(newUser);
 
-			User newUser = new User(username, password, email);
-			int status = userServ.create(newUser);
-
-			if (status == 0) {
-				return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<>("Error creating new user, check username already taken",
-						HttpStatus.NOT_ACCEPTABLE);
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			return new ResponseEntity<>("ERROR Please contact admin", HttpStatus.INTERNAL_SERVER_ERROR);
+		if (status == 0) {
+			return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<>("Error creating new user, check username already taken",
+					HttpStatus.NOT_ACCEPTABLE);
 		}
 
 	}
@@ -149,13 +143,12 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/logincheck")
+	@PostMapping(path = "/logincheck", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<String> checkLogin(@RequestBody User userCheck) {
 
-	ResponseEntity<String> checkLogin(@RequestParam String username, @RequestParam String password) {
+		User found = userServ.getByUsername(userCheck.getUsername());
 
-		User found = userServ.getByUsername(AESUtil.encrypt(username));
-
-		int status = userServ.loginValidation(AESUtil.encrypt(username), AESUtil.encrypt(password));
+		int status = userServ.loginValidation(userCheck.getUsername(), userCheck.getPassword());
 		if (status == 0) {
 			int statusSession = sessionServ.create(found);
 			if (statusSession == 0) {

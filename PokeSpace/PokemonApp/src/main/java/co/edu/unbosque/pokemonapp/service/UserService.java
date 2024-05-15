@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.pokemonapp.model.User;
 import co.edu.unbosque.pokemonapp.repository.UserRepository;
-import co.edu.unbosque.pokemonapp.util.AESUtil;
 
 @Service
 public class UserService {
@@ -25,15 +24,17 @@ public class UserService {
 
 	public int create(User newUser) {
 
-		String username = AESUtil.encrypt(newUser.getUsername());
-		String password = AESUtil.encrypt(newUser.getPassword());
-		String email = AESUtil.encrypt(newUser.getEmail());
-		if (findUsernameAlreadyTaken(newUser) || findUsernameAlreadyTaken(newUser)) {
+		String username = newUser.getUsername();
+		String password = newUser.getPassword();
+		String email = newUser.getEmail();
+		if (findUsernameAlreadyTaken(newUser) || findEmailAlreadyTaken(newUser)) {
 			return 1;
 		} else {
 			newUser.setUsername(username);
 			newUser.setPassword(password);
 			newUser.setEmail(email);
+			System.out.println(email);
+			emailService.sendWelcomeEmail(email);
 			userRep.save(newUser);
 			return 0;
 		}
@@ -41,12 +42,13 @@ public class UserService {
 
 	public int loginValidation(String username, String password) {
 
-		String userValidiation = AESUtil.encrypt(username);
-		String passwordValdiation = AESUtil.encrypt(password);
+		String userValidiation = username;
+		String passwordValdiation = password;
 		for (User u : getAll()) {
 
 			if (u.getUsername().equals(userValidiation)) {
 				if (u.getPassword().equals(passwordValdiation)) {
+
 					return 0;
 				}
 			}
@@ -150,7 +152,7 @@ public class UserService {
 	}
 
 	public boolean findUsernameAlreadyTaken(User userSearch) {
-		Optional<User> found = userRep.findByUsername(AESUtil.encrypt(userSearch.getUsername()));
+		Optional<User> found = userRep.findByUsername(userSearch.getUsername());
 		if (found.isPresent()) {
 			return true;
 		} else {
@@ -159,7 +161,7 @@ public class UserService {
 	}
 
 	public boolean findEmailAlreadyTaken(User userSearch) {
-		Optional<User> found = userRep.findByEmail(AESUtil.encrypt(userSearch.getEmail()));
+		Optional<User> found = userRep.findByEmail(userSearch.getEmail());
 		if (found.isPresent()) {
 			return true;
 		} else {
@@ -169,7 +171,7 @@ public class UserService {
 
 	public boolean findPassword(User userSearch) {
 
-		Optional<User> found = userRep.findByPassword(AESUtil.encrypt(userSearch.getPassword()));
+		Optional<User> found = userRep.findByPassword(userSearch.getPassword());
 
 		if (found.isPresent()) {
 			return true;

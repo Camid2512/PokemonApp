@@ -21,7 +21,7 @@ public class EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 		try {
 			helper.setTo(to);
-			helper.setSubject("Welcome to Virus Total");
+			helper.setSubject("Welcome Trainer");
 
 			// Utiliza HTML para dar estilo al correo electrónico
 			String htmlMsg = "<html><body style=\"font-family: Arial, sans-serif; background-color: #3498db;\">"
