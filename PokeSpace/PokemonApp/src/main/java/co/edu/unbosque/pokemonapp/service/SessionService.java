@@ -50,7 +50,7 @@ public class SessionService {
 			temp.setIp_address(newSessionIpLocation.getIp_address());
 			temp.setLongitude(newSessionIpLocation.getLongitude());
 			temp.setLatitude(newSessionIpLocation.getLatitude());
-			temp.setDatetime(dateTimeData.getDateTimeInfo(location).getDatetime());
+			temp.setDatetime(dateTimeData.getDateTimeInfo(newSessionIpLocation.getIp_address()).getDatetime());
 			sessionRep.save(temp);
 			return 0;
 		} catch (IOException error) {

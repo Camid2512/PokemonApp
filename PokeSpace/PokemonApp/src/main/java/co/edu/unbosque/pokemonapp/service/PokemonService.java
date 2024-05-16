@@ -93,22 +93,10 @@ public class PokemonService {
 		Move[] randomMoves = moveServ.getRandomMovesArray();
 		temp.setMoves(randomMoves);
 		JSONObject spritesObj = pokemonData.getJSONObject("sprites");
-		int pokeId = pokemonData.getInt("id");
-		String backSpriteUrl = "";
 		String spriteUrl = "";
-		if (pokeId < 899) {
-			backSpriteUrl = spritesObj.getString("back_default");
-			spriteUrl = spritesObj.getString("front_default");
-		} else {
-			backSpriteUrl = null;
-			spriteUrl = spritesObj.getString("front_default");
+		spriteUrl = spritesObj.getString("front_default");
 
-		}
-
-		String[] sprites = new String[2];
-		sprites[0] = backSpriteUrl;
-		sprites[1] = spriteUrl;
-		temp.setSprite(sprites);
+		temp.setSprite(spriteUrl);
 		int hp = 0, attack = 0, defense = 0, specialAttack = 0, specialDefense = 0, speed = 0;
 		JSONArray statsArray = pokemonData.getJSONArray("stats");
 		for (int i = 0; i < statsArray.length(); i++) {
@@ -200,6 +188,10 @@ public class PokemonService {
 		} else {
 			return null;
 		}
+	}
+
+	public List<Pokemon> getAll() {
+		return pokeRep.findAll();
 	}
 
 }

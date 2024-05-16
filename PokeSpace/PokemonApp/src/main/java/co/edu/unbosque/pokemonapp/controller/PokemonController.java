@@ -1,5 +1,7 @@
 package co.edu.unbosque.pokemonapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +73,11 @@ public class PokemonController {
 
 		return new ResponseEntity<>(pokeServ.getPokeInfo(pokeId), HttpStatus.ACCEPTED);
 
+	}
+
+	@GetMapping("/getallpokemon")
+	ResponseEntity<List<Pokemon>> getAllPokemon() {
+		return new ResponseEntity<>(pokeServ.getAll(), HttpStatus.ACCEPTED);
 	}
 
 }

@@ -7,6 +7,8 @@ import org.apache.hc.client5.http.fluent.Request;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import co.edu.unbosque.pokemonapp.model.DateTime;
 
@@ -26,12 +28,14 @@ public class DateTimeService {
 
 		try {
 
-			Content content = Request.get(
-					"https://timezone.abstractapi.com/v1/current_time/?api_key=6f518906dba04da29b870e599bbc4652&location="
-							+ location)
-					.execute().returnContent();
+			Content content = Request.get("https://worldtimeapi.org/api/ip/" + location).execute().returnContent();
 
-			dateTimeData = gson.fromJson(content.toString(), DateTime.class);
+			String jsonResponse = content.asString();
+
+			JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+			String dateTime = jsonObject.get("datetime").getAsString();
+
+			dateTimeData = new DateTime(dateTime);
 
 			System.out.println(dateTimeData.getDatetime());
 

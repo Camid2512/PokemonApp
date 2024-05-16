@@ -18,7 +18,7 @@ public class Pokemon {
 	private int height;
 	private int weight;
 	private Move[] moves;
-	private String[] sprite;
+	private String sprite;
 	private double hp;
 	private double attack;
 	private double defense;
@@ -29,15 +29,13 @@ public class Pokemon {
 
 	public Pokemon() {
 		// TODO Auto-generated constructor stub
-		sprite = new String[2];
 		moves = new Move[4];
 		types = new String[4];
 	}
 
-	public Pokemon(int pokeId, String name, int height, int weight, Move[] moves, String[] sprite, double hp,
+	public Pokemon(int pokeId, String name, int height, int weight, Move[] moves, String sprite, double hp,
 			double attack, double defense, double specialAttack, double specialDefense, int speed, String[] types) {
 
-		sprite = new String[2];
 		moves = new Move[4];
 		types = new String[4];
 		this.pokeId = pokeId;
@@ -103,11 +101,11 @@ public class Pokemon {
 		this.moves = moves;
 	}
 
-	public String[] getSprite() {
+	public String getSprite() {
 		return sprite;
 	}
 
-	public void setSprite(String[] sprite) {
+	public void setSprite(String sprite) {
 		this.sprite = sprite;
 	}
 
@@ -170,9 +168,9 @@ public class Pokemon {
 	@Override
 	public String toString() {
 		return "Pokemon [id=" + id + ", pokeId=" + pokeId + ", name=" + name + ", height=" + height + ", weight="
-				+ weight + ", moves=" + Arrays.toString(moves) + ", sprite=" + Arrays.toString(sprite) + ", hp=" + hp
-				+ ", attack=" + attack + ", defense=" + defense + ", specialAttack=" + specialAttack
-				+ ", specialDefense=" + specialDefense + ", speed=" + speed + ", types=" + Arrays.toString(types) + "]";
+				+ weight + ", moves=" + Arrays.toString(moves) + ", sprite=" + sprite + ", hp=" + hp + ", attack="
+				+ attack + ", defense=" + defense + ", specialAttack=" + specialAttack + ", specialDefense="
+				+ specialDefense + ", speed=" + speed + ", types=" + Arrays.toString(types) + "]";
 	}
 
 }
